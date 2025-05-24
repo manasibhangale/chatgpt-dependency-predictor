@@ -25,25 +25,21 @@ st.markdown(
         margin-bottom: 0.3rem;
     }
 
-    /* Hide hamburger menu and footer */
     #MainMenu, footer, header {
         visibility: hidden;
     }
 
-    /* Remove box around title */
     .css-1d391kg {
         padding-top: 1rem;
         padding-bottom: 0.5rem;
         background: none;
     }
 
-    /* Label styling */
     label, .stNumberInput label, .stSelectbox label, .stRadio label {
         color: #b0b8c1;
         font-weight: 600;
     }
 
-    /* Number inputs */
     input[type=number] {
         background-color: #1e1e1e !important;
         color: #e0e0e0 !important;
@@ -52,20 +48,17 @@ st.markdown(
         padding: 6px !important;
     }
 
-    /* Selectbox dropdown */
     div[role="listbox"] {
         background-color: #1e1e1e !important;
         color: #e0e0e0 !important;
     }
 
-    /* Radio buttons */
     .stRadio > label {
         color: #b0b8c1 !important;
     }
 
-    /* Predict button styling */
     div.stButton > button {
-        background-color: #4b8bbe; /* sophisticated blue */
+        background-color: #4b8bbe;
         color: white;
         font-weight: 700;
         font-size: 16px;
@@ -80,9 +73,8 @@ st.markdown(
         cursor: pointer;
     }
 
-    /* Slider style - track and thumb */
     input[type="range"] {
-        accent-color: #4b8bbe;  /* matching blue accent */
+        accent-color: #4b8bbe;
     }
 
     .stSlider label {
@@ -97,7 +89,7 @@ st.markdown(
 # Title
 st.title("🤖 ChatGPT Dependency Predictor")
 
-# Inputs (2 sliders + other fields)
+# Inputs
 chatgpt_usage = st.number_input(
     "ChatGPT usage frequency per week", min_value=0, max_value=50, value=3, step=1
 )
@@ -107,14 +99,12 @@ duration = st.number_input(
 attempts = st.number_input(
     "Attempts before using ChatGPT", min_value=0, max_value=20, value=2, step=1
 )
-
 confidence = st.slider(
     "Confidence in solving alone (1 = low, 5 = high)", 1, 5, 3
 )
 peer_influence = st.slider(
     "Peer usage influence (1 = none, 5 = strong)", 1, 5, 3
 )
-
 reason = st.selectbox(
     "Reason for using ChatGPT", ['No idea', 'Save time', 'Better answers']
 )
@@ -122,7 +112,7 @@ cgpa = st.number_input(
     "CGPA (0.0 - 10.0)", min_value=0.0, max_value=10.0, step=0.01, value=7.5
 )
 department = st.selectbox(
-    "Department", ['CSE', 'ECE', 'CIVIL']
+    "Department", ['MECH', 'EXTC', 'COMPUTER', 'IT', 'ELECTRICAL', 'CIVIL']
 )
 used_other_ai = st.radio(
     "Used other AI tools?", [0, 1], index=0, format_func=lambda x: "No" if x == 0 else "Yes"
@@ -149,5 +139,22 @@ input_df = pd.DataFrame([{
 if st.button("Predict Dependency"):
     prediction = model.predict(input_df)[0]
     probability = model.predict_proba(input_df)[0][1]
-    st.success(f"Predicted ChatGPT Dependency: {'Yes' if prediction == 1 else 'No'}")
-    st.write(f"Confidence score: {probability:.2f}")
+
+    if prediction == 1:
+        st.error(f"🔍 Predicted ChatGPT Dependency: Yes")
+        st.write(f"Confidence score: {probability:.2f}")
+        st.markdown("### 🧠 Tips to Reduce ChatGPT Dependency and Boost Critical Thinking:")
+        st.markdown("""
+        - 💡 **Try solving problems on your own** for at least 30 minutes before asking ChatGPT.
+        - 🧠 **Use ChatGPT to verify** your answers, not as the first step.
+        - ✍️ **Maintain a learning journal** where you write key takeaways instead of copy-pasting.
+        - 🧑‍🤝‍🧑 **Discuss with peers or professors** before turning to AI tools.
+        - 📚 **Refer to books, lecture notes, or trusted educational videos** before seeking AI help.
+        - ⏱️ **Limit usage duration** (e.g., no more than 30 minutes/day).
+        - ❌ Avoid using ChatGPT during assessments unless explicitly allowed.
+        """)
+    else:
+        st.success(f"✅ Predicted ChatGPT Dependency: No")
+        st.write(f"Confidence score: {probability:.2f}")
+        st.markdown("### 🎉 You're using ChatGPT responsibly!")
+        st.markdown("Keep up your strong self-learning habits. Try mentoring peers or exploring advanced topics independently. 🚀")

@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, OrdinalEncoder
 
 # Load the dataset
-df = pd.read_csv("chatgpt_dependence_dataset.csv")
+df = pd.read_csv("chatgpt_dependency_dataset.csv")
 
 # Separate features and target
 X = df.drop("chatgpt_dependence", axis=1)
